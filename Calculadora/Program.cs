@@ -22,6 +22,7 @@ namespace Calculadora
             float Investimento;
             float VisusCompartilha;
             float VisusDiretas;
+            float Clicks;
             float NewClicks;
             float Compartilhamentos;
 
@@ -38,6 +39,22 @@ namespace Calculadora
             }
 
             Console.WriteLine("O valor de seu investimento é " + Investimento + "R$");
+
+            VisusDiretas = Investimento * 30;   // Multiplica o investimento para visualizações Diretas
+            Clicks = VisusDiretas * PorcentoClicks;   // Define o numero de clicks por visualização
+            Compartilhamentos = Clicks * PorcentoCompartilhar;  // Define o número de compartilhamentos do anúncio
+
+            VisusCompartilha = Compartilhamentos * 40; // Visualizações de compartilhamento
+
+            while (MaxCompartilha != 4)
+            {
+
+
+            }
+
+
+
+
         }
     }
 }
