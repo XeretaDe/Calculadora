@@ -20,10 +20,11 @@ namespace Calculadora
             int MaxCompartilha = 0;
 
             float Investimento;
-            float VisusCompartilha;
+            float VisusIndiretas;
             float VisusDiretas;
-            float Clicks;
-            float NewClicks;
+            float ClicksInicial;
+            float ClicksIndiretos;
+            float ClicksFinal;
             float Compartilhamentos;
 
             float PorcentoClicks = 0.12F;
@@ -41,18 +42,23 @@ namespace Calculadora
             Console.WriteLine("O valor de seu investimento é " + Investimento + "R$");
 
             VisusDiretas = Investimento * 30;   // Multiplica o investimento para visualizações Diretas
-            Clicks = VisusDiretas * PorcentoClicks;   // Define o numero de clicks por visualização
-            Compartilhamentos = Clicks * PorcentoCompartilhar;  // Define o número de compartilhamentos do anúncio
+            ClicksInicial = VisusDiretas * PorcentoClicks;   // Define o numero de clicks por visualização
+            Compartilhamentos = ClicksInicial * PorcentoCompartilhar;  // Define o número de compartilhamentos do anúncio
 
-            VisusCompartilha = Compartilhamentos * 40; // Visualizações de compartilhamento
+            VisusIndiretas = Compartilhamentos * 40; // Visualizações de compartilhamento
 
             while (MaxCompartilha != 4)
             {
+                if(Compartilhamentos != 0)
+                {
+                    ClicksIndiretos = VisusIndiretas * PorcentoClicks;
+                    Compartilhamentos = ClicksIndiretos * PorcentoCompartilhar;
 
-
+                }
+                MaxCompartilha++;
             }
 
-
+            Console.WriteLine("Suas visualizações diretas serão por volta de " + VisusDiretas + " e seu número de Clicks serão aproximadamente " + ClicksFinal);
 
 
         }
