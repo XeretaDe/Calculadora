@@ -14,11 +14,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\maiac\\Desktop\\Calculadora\\Calculadora\\Calculadora.csproj",
+      "projectUniqueName": "R:\\Calculadora\\Calculadora\\Calculadora.csproj",
       "projectName": "Calculadora",
-      "projectPath": "C:\\Users\\maiac\\Desktop\\Calculadora\\Calculadora\\Calculadora.csproj",
+      "projectPath": "R:\\Calculadora\\Calculadora\\Calculadora.csproj",
       "packagesPath": "C:\\Users\\maiac\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\maiac\\Desktop\\Calculadora\\Calculadora\\obj\\",
+      "outputPath": "R:\\Calculadora\\Calculadora\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\"

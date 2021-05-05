@@ -24,7 +24,7 @@ namespace Calculadora
             float VisusDiretas;
             float ClicksInicial;
             float ClicksIndiretos;
-            float ClicksFinal;
+            float ClicksFinal = 1; // MUDAR NO FUTURO
             float Compartilhamentos;
 
             float PorcentoClicks = 0.12F;
