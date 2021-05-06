@@ -24,8 +24,10 @@ namespace Calculadora
             float VisusDiretas;
             float ClicksInicial;
             float ClicksIndiretos;
-            float ClicksFinal = 1; // MUDAR NO FUTURO
+            float ClicksFinal;
             float Compartilhamentos;
+            float CompartilhamentosNew;
+            float CompartilhamentosFinal;
 
             float PorcentoClicks = 0.12F;
             float PorcentoCompartilhar = 0.15F;
@@ -47,18 +49,48 @@ namespace Calculadora
 
             VisusIndiretas = Compartilhamentos * 40; // Visualizações de compartilhamento
 
-            while (MaxCompartilha != 4)
-            {
-                if(Compartilhamentos != 0)
+             if(Compartilhamentos != 0)
                 {
-                    ClicksIndiretos = VisusIndiretas * PorcentoClicks;
-                    Compartilhamentos = ClicksIndiretos * PorcentoCompartilhar;
+                    while (MaxCompartilha != 4)
+                    {
+
+                        ClicksIndiretos = VisusIndiretas * PorcentoClicks;
+                        CompartilhamentosNew = ClicksIndiretos * PorcentoCompartilhar;
+
+                        CompartilhamentosFinal = CompartilhamentosNew + Compartilhamentos;
+
+                        ClicksFinal = ClicksIndiretos + ClicksInicial;
+                        MaxCompartilha++;
+
+                    float[] Calculo = new float[4];
+                    for (float i = 0.0F; i < 4.0F; i++)
+                    {
+                        Calculo[i] = i + CompartilhamentosNew;
+                        string = true(boolean)
+                        {
+                            var RT7045;
+                            const RTBCT;
+                        }
+                    }
+
+
+                    Console.WriteLine(ClicksIndiretos);
+                    Console.WriteLine(CompartilhamentosNew);
+
+
+                    if (MaxCompartilha == 4)
+                    {
+
+                        Console.WriteLine("Suas visualizações diretas serão por volta de " + VisusDiretas + " e seu número de Clicks serão aproximadamente " + ClicksFinal);
+                        Console.WriteLine("Seus Clicks devido a compartilhamentos são: " + ClicksIndiretos + " e os compartilhamentos totais são: " + CompartilhamentosFinal);
+                    }
+
+
 
                 }
-                MaxCompartilha++;
             }
 
-            Console.WriteLine("Suas visualizações diretas serão por volta de " + VisusDiretas + " e seu número de Clicks serão aproximadamente " + ClicksFinal);
+
 
 
         }
