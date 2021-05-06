@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 
 namespace Calculadora
 {
@@ -32,6 +33,8 @@ namespace Calculadora
             float PorcentoClicks = 0.12F;
             float PorcentoCompartilhar = 0.15F;
 
+      
+
 
             Console.WriteLine("Insira o valor de seu investimento:");
 
@@ -46,47 +49,62 @@ namespace Calculadora
             VisusDiretas = Investimento * 30;   // Multiplica o investimento para visualizações Diretas
             ClicksInicial = VisusDiretas * PorcentoClicks;   // Define o numero de clicks por visualização
             Compartilhamentos = ClicksInicial * PorcentoCompartilhar;  // Define o número de compartilhamentos do anúncio
-
             VisusIndiretas = Compartilhamentos * 40; // Visualizações de compartilhamento
 
-             if(Compartilhamentos != 0)
+            int[] CalculoDeVisus = new int[4];
+            int[] CalculoDeCompartilhamentos = new int[4];
+            int[] CalculoDeClicks = new int[4];
+
+
+
+            if (Compartilhamentos != 0)
+            {
+
+                while (MaxCompartilha < 4)
                 {
-                    while (MaxCompartilha != 4)
+
+                    ClicksIndiretos = VisusIndiretas * PorcentoClicks;
+                    CompartilhamentosNew = ClicksIndiretos * PorcentoCompartilhar;
+                    CompartilhamentosFinal = CompartilhamentosNew + Compartilhamentos;
+                    ClicksFinal = ClicksIndiretos + ClicksInicial;
+
+                    if (MaxCompartilha != 1)
                     {
-
-                        ClicksIndiretos = VisusIndiretas * PorcentoClicks;
-                        CompartilhamentosNew = ClicksIndiretos * PorcentoCompartilhar;
-
-                        CompartilhamentosFinal = CompartilhamentosNew + Compartilhamentos;
-
-                        ClicksFinal = ClicksIndiretos + ClicksInicial;
-                        MaxCompartilha++;
-
-                    float[] Calculo = new float[4];
-                    for (float i = 0.0F; i < 4.0F; i++)
-                    {
-                        Calculo[i] = i + CompartilhamentosNew;
-
+                        VisusIndiretas = CompartilhamentosNew * 40;
                     }
 
+                    CalculoDeVisus[MaxCompartilha] = (int)VisusIndiretas;
 
-                    Console.WriteLine(ClicksIndiretos);
-                    Console.WriteLine(CompartilhamentosNew);
+                    CalculoDeCompartilhamentos[MaxCompartilha] = (int)CompartilhamentosNew;
+
+                    CalculoDeClicks[MaxCompartilha] = (int)ClicksIndiretos;
+
+
+                    //  Console.WriteLine(ClicksIndiretos);
+                    //   Console.WriteLine(CompartilhamentosNew);
+
+                    MaxCompartilha++;
 
 
                     if (MaxCompartilha == 4)
                     {
+                    int VisusIndiretas = CalculoDeVisus.Aggregate((a, b) => a + b);
+                    int totalCompartilhar = CalculoDeCompartilhamentos.Aggregate((a, b) => a + b);
+                    int ClicksIndiretos = CalculoDeClicks.Aggregate((a, b) => a + b);
 
-                        Console.WriteLine("Suas visualizações diretas serão por volta de " + VisusDiretas + " e seu número de Clicks serão aproximadamente " + ClicksFinal);
-                        Console.WriteLine("Seus Clicks devido a compartilhamentos são: " + ClicksIndiretos + " e os compartilhamentos totais são: " + CompartilhamentosFinal);
+                        Console.WriteLine(VisusIndiretas);
+                        Console.WriteLine(totalCompartilhar);
+                        Console.WriteLine(ClicksIndiretos);
+
+                        // Console.WriteLine("Suas visualizações diretas serão por volta de " + VisusDiretas + " e seu número de Clicks serão aproximadamente " + ClicksFinal);
+                        // Console.WriteLine("Seus Clicks devido a compartilhamentos são: " + ClicksIndiretos + " e os compartilhamentos totais são: " + CompartilhamentosFinal);
                     }
-
 
 
                 }
             }
 
-
+            
 
 
         }
