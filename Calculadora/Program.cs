@@ -66,11 +66,7 @@ namespace Calculadora
                     for (float i = 0.0F; i < 4.0F; i++)
                     {
                         Calculo[i] = i + CompartilhamentosNew;
-                        string = true(boolean)
-                        {
-                            var RT7045;
-                            const RTBCT;
-                        }
+
                     }
 
 
