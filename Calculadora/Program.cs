@@ -54,9 +54,9 @@ namespace Calculadora
             VisusIndiretas = Compartilhamentos * 40; // Visualizações de compartilhamento
 
 
-            int[] CalculoDeVisus = new int[4];   // Criação de arrays
-            int[] CalculoDeCompartilhamentos = new int[3];
-            int[] CalculoDeClicks = new int[4];
+            float[] CalculoDeVisus = new float[4];   // Criação de arrays
+            float[] CalculoDeCompartilhamentos = new float[3];
+            float[] CalculoDeClicks = new float[4];
 
 
                 while (MaxCompartilha < 4){
@@ -64,16 +64,16 @@ namespace Calculadora
                 ClicksIndiretos = VisusIndiretas * PorcentoClicks;
                 CompartilhamentosNew = ClicksIndiretos * PorcentoCompartilhar;  
                 
-                CalculoDeVisus[MaxCompartilha] = (int)VisusIndiretas; // Definir Array
+                CalculoDeVisus[MaxCompartilha] = VisusIndiretas; // Definir Array
 
                 VisusIndiretas = CompartilhamentosNew * 40;  
 
 
                     if (MaxCompartilha < 3){
-                    CalculoDeCompartilhamentos[MaxCPM] = (int)CompartilhamentosNew; //Definir array
+                    CalculoDeCompartilhamentos[MaxCPM] = CompartilhamentosNew; //Definir array
                     }
 
-                CalculoDeClicks[MaxCompartilha] = (int)ClicksIndiretos; // Definir Array
+                CalculoDeClicks[MaxCompartilha] = ClicksIndiretos; // Definir Array
 
                 MaxCompartilha++;  // Aumento do index
 
@@ -85,12 +85,17 @@ namespace Calculadora
    
 
                 float VisusIndiretasTT = CalculoDeVisus.Aggregate((a, b) => a + b);     // Soma dos arrays
-                int totalCompartilhar = CalculoDeCompartilhamentos.Aggregate((a, b) => a + b);
-                int ClicksIndiretosTT = CalculoDeClicks.Aggregate((a, b) => a + b);
+                float totalCompartilhar = CalculoDeCompartilhamentos.Aggregate((a, b) => a + b);
+                float ClicksIndiretosTT = CalculoDeClicks.Aggregate((a, b) => a + b);
 
-                Console.WriteLine(VisusIndiretasTT + VisusDiretas +" Visus");
-                Console.WriteLine(totalCompartilhar + (int)Compartilhamentos + " Compartilhamentos");
-                Console.WriteLine(ClicksIndiretosTT + ClicksInicial + " Clicks");
+
+                int SumVisu = (int)Math.Round(VisusIndiretasTT) + (int)Math.Round(VisusDiretas); 
+                int SumCPM = (int)Math.Round(totalCompartilhar) + (int)Math.Round(Compartilhamentos);
+                int SumClicks = (int)Math.Round(ClicksIndiretosTT) + (int)Math.Round(ClicksInicial);
+
+                Console.WriteLine(SumVisu +" Visus");
+                Console.WriteLine(SumCPM + " Compartilhamentos");
+                Console.WriteLine(SumClicks + " Clicks");
 
                 // Console.WriteLine("Suas visualizações diretas serão por volta de " + VisusDiretas + " e seu número de Clicks serão aproximadamente " + ClicksFinal);
                 // Console.WriteLine("Seus Clicks devido a compartilhamentos são: " + ClicksIndiretos + " e os compartilhamentos totais são: " + CompartilhamentosFinal);
