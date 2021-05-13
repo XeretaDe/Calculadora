@@ -117,7 +117,8 @@ namespace Calculadora
             VisusIndiretasTT = CalculoDeVisus.Aggregate((a, b) => a + b);
             totalCompartilhar = CalculoDeCompartilhamentos.Aggregate((a, b) => a + b);
             ClicksIndiretosTT = CalculoDeClicks.Aggregate((a, b) => a + b);
-            SomaArredondada();
+            SomaArredondada(); // DEBUG P VERIFICAR SOMAS DOS ARRAYS
+            
         }
 
         public void SomaArredondada()
