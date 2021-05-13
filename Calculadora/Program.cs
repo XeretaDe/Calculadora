@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Calculadora
@@ -38,18 +39,150 @@ namespace Calculadora
         float[] CalculoDeCompartilhamentos = new float[3];
         float[] CalculoDeClicks = new float[4];
 
+        // valores totais indiretos
+
         private float VisusIndiretasTT { get; set; }
         private float totalCompartilhar { get; set; }
         private float ClicksIndiretosTT { get; set; }
+
+        // Soma dos valores totais
 
         private int SumVisu { get; set; }
         private int SumCPM { get; set; }
         private int SumClicks { get; set; }
 
 
+        // Valores de anuncio
+        List<string>   NomeAd = new();
+        List<string>   NomeUser = new();
+        List<float>    InvestDiario = new();
+        List<DateTime> DataInicial = new();
+        List<DateTime> DataFinal = new();
+
+
+
         public void Start()
         {
-            CalculoBase();
+            Console.WriteLine("Opção 1: Registrar seu AD");
+            Console.WriteLine("Opção 2: Verificar ADs registrados");
+            Console.WriteLine("Opção 3: Fazer uma simulação de AD");
+
+            Console.WriteLine();
+            Console.WriteLine("Selecione sua opção com os número 1, 2 ou 3!");
+
+            SwitchLoop();
+
+        }
+
+        public void SwitchLoop()
+        {
+            bool start = false;
+            char Option = Console.ReadKey().KeyChar;
+
+            switch (Option)
+            {
+
+                case '1':
+                    start = true;
+                    AdReg();
+                    break;
+
+                case '2':
+                    start = true;
+                    registros();
+                    break;
+
+                case '3':
+                    start = true;
+                    CalculoBase();
+                    break;
+            }
+
+            if(start is false) {
+            Console.WriteLine();
+            Console.WriteLine("Opção inválida, tente novamente");
+            Start();
+            }
+        }
+
+        public void AdReg()
+        {
+
+            DateTime ValorDataIni;
+            DateTime ValorDataFin;
+            String AdEscrito;
+            String User;
+
+            Console.Clear();
+
+
+            Console.WriteLine("Insira o nome de seu anúncio:");
+            AdEscrito = Console.ReadLine();
+            while (string.IsNullOrWhiteSpace(AdEscrito))
+            {
+                Console.WriteLine("O nome de seu anúncio deve ter no mínimo um caracter, tente novamente");
+                AdEscrito = Console.ReadLine();
+            }
+            NomeAd.Add(AdEscrito);
+
+
+            Console.WriteLine("Insira o nome de seu cliente:");
+            User = Console.ReadLine();
+            while (string.IsNullOrWhiteSpace(User))
+            {
+                Console.WriteLine("O nome de seu anúncio deve ter no mínimo um caracter, tente novamente");
+                User = Console.ReadLine();
+            }
+            NomeUser.Add(User);
+
+            Console.WriteLine("Insira a data de ínicio de seu AD em dd/MM/yyyy");
+            while (!DateTime.TryParse(Console.ReadLine(), null, System.Globalization.DateTimeStyles.None, out ValorDataIni)) {
+
+                Console.WriteLine("Formato inválido, tente novamente, lembre-se dd/MM/YYYY");
+            }
+            DataInicial.Add(ValorDataIni);
+
+            Console.WriteLine("Insira a data de finalização de seu AD em dd/MM/yyyy");
+            while (!DateTime.TryParse(Console.ReadLine(), null, System.Globalization.DateTimeStyles.None, out ValorDataFin))
+            {
+
+                Console.WriteLine("Formato inválido, tente novamente, lembre-se dd/MM/YYYY");
+            }
+            DataFinal.Add(ValorDataFin);
+
+            Console.WriteLine("Insira o valor de seu investimento diário");
+
+            while (!float.TryParse(Console.ReadLine(), out Investimento)) // While loop para evitar possível erro
+            {
+                Console.WriteLine("Tente inserir um número!");
+            }
+            InvestDiario.Add(Investimento);
+
+            Console.Clear();
+
+            var LastAd = NomeAd[NomeAd.Count - 1];
+            var LastUser = NomeUser[NomeUser.Count - 1];
+            var LastDateIn = DataInicial[DataInicial.Count - 1];
+            var LastDatFin = DataFinal[DataFinal.Count - 1];
+            var LastInvest = InvestDiario[InvestDiario.Count - 1];
+
+            var TotalDays = (LastDatFin.Date - LastDateIn.Date).Days;
+            var TotalInvest = (TotalDays * LastInvest);
+
+            Console.WriteLine(LastAd + " registrado com sucesso, com os seguintes dados:");
+            Console.WriteLine("Cliente: " + LastUser);
+            Console.WriteLine("Data de ínicio " + LastDateIn);
+            Console.WriteLine("Data de término " + LastDatFin);
+            Console.WriteLine("O valor de seu investimento diário é: " + LastInvest + "R$");
+            Console.WriteLine("Seu AD durará " + TotalDays + " dias e custará no total: " + TotalInvest + "R$"); 
+
+
+
+        }
+
+        public void registros()
+        {
+
         }
 
         public void CalculoBase()
@@ -144,9 +277,11 @@ namespace Calculadora
         {
 
             Console.WriteLine("Para o investimento de " + Investimento + "R$ você terá aproximadamente:");
-            Console.WriteLine(SumVisu + " Visualizações");
-            Console.WriteLine(SumCPM + " Compartilhamentos");
-            Console.WriteLine(SumClicks + " Clicks");
+            Console.WriteLine(SumVisu + " Visualizações por dia");
+            Console.WriteLine(SumCPM + " Compartilhamentos por dia");
+            Console.WriteLine(SumClicks + " Clicks por dia");
+
+            //
 
             exit(); // DEBUG P VERIFICAR CALCULOS
 
@@ -185,6 +320,9 @@ namespace Calculadora
 
             Console.WriteLine("Bem vindo a calculadora de rendimento de ADs!");
             Console.WriteLine();
+            Console.WriteLine("Aqui você poderá adicionar seu próprio AD, verificar outros ADs ou simplesmente fazer uma simulação do rendimento de um investimento em um possível AD contratado.");
+            Console.WriteLine();
+
 
             Chamadas.Start();
 
