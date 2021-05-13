@@ -1,0 +1,17 @@
+R:\Calculadora\Calculadora\bin\Release\net5.0\Calculadora.exe
+R:\Calculadora\Calculadora\bin\Release\net5.0\Calculadora.deps.json
+R:\Calculadora\Calculadora\bin\Release\net5.0\Calculadora.runtimeconfig.json
+R:\Calculadora\Calculadora\bin\Release\net5.0\Calculadora.runtimeconfig.dev.json
+R:\Calculadora\Calculadora\bin\Release\net5.0\Calculadora.dll
+R:\Calculadora\Calculadora\bin\Release\net5.0\ref\Calculadora.dll
+R:\Calculadora\Calculadora\bin\Release\net5.0\Calculadora.pdb
+R:\Calculadora\Calculadora\obj\Release\net5.0\Calculadora.Properties.Resources.resources
+R:\Calculadora\Calculadora\obj\Release\net5.0\Calculadora.csproj.GenerateResource.cache
+R:\Calculadora\Calculadora\obj\Release\net5.0\Calculadora.GeneratedMSBuildEditorConfig.editorconfig
+R:\Calculadora\Calculadora\obj\Release\net5.0\Calculadora.AssemblyInfoInputs.cache
+R:\Calculadora\Calculadora\obj\Release\net5.0\Calculadora.AssemblyInfo.cs
+R:\Calculadora\Calculadora\obj\Release\net5.0\Calculadora.csproj.CoreCompileInputs.cache
+R:\Calculadora\Calculadora\obj\Release\net5.0\Calculadora.dll
+R:\Calculadora\Calculadora\obj\Release\net5.0\ref\Calculadora.dll
+R:\Calculadora\Calculadora\obj\Release\net5.0\Calculadora.pdb
+R:\Calculadora\Calculadora\obj\Release\net5.0\Calculadora.genruntimeconfig.cache

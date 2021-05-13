@@ -46,6 +46,12 @@ namespace Calculadora
         private int SumCPM { get; set; }
         private int SumClicks { get; set; }
 
+
+        public void Start()
+        {
+            CalculoBase();
+        }
+
         public void CalculoBase()
         {
 
@@ -64,9 +70,15 @@ namespace Calculadora
             Compartilhamentos = ClicksInicial * PorcentoCompartilhar;  // Define o número de compartilhamentos do anúncio
             VisusIndiretas = Compartilhamentos * 40; // Visualizações de compartilhamento
 
-            if (Compartilhamentos > 0)
+            if (Compartilhamentos > 1)     // DEBUG para verificar valores e calculos.
             {
                 CalculoCPM();
+            }
+            else
+            {
+
+                Soma();
+
             }
         }
 
@@ -92,7 +104,7 @@ namespace Calculadora
 
                 CalculoDeClicks[MaxCompartilha] = ClicksIndiretos; // Definir Array
 
-                MaxCompartilha++;  // Aumento do index
+                MaxCompartilha++;  // Aumento do index + DEBUG P VERIFICAR VALORES DOS ARRAYS
 
                 if (MaxCompartilha < 3)
                 {
@@ -114,12 +126,16 @@ namespace Calculadora
             SumCPM = (int)Math.Round(totalCompartilhar) + (int)Math.Round(Compartilhamentos);
             SumClicks = (int)Math.Round(ClicksIndiretosTT) + (int)Math.Round(ClicksInicial);
 
-            WriteLine();
+            WriteLine(); // DEBUG P VERIFICAR CALCULOS
         }
 
         public void Soma()
         {
+            SumVisu = (int)Math.Round(VisusIndiretasTT) + (int)Math.Round(VisusDiretas);
+            SumCPM = (int)totalCompartilhar + (int)Compartilhamentos;
+            SumClicks = (int)Math.Round(ClicksIndiretosTT) + (int)Math.Round(ClicksInicial);
 
+            WriteLine(); // DEBUG P VERIFICAR CALCULOS
 
         }
 
@@ -131,9 +147,27 @@ namespace Calculadora
             Console.WriteLine(SumCPM + " Compartilhamentos");
             Console.WriteLine(SumClicks + " Clicks");
 
+            exit(); // DEBUG P VERIFICAR CALCULOS
 
         }
 
+        public  void exit()
+        {
+            Console.WriteLine("Digite 1 se quiser fechar o programa, se quiser recomeçar o processo clique qualquer outra tecla.");
+
+            string Exit = Console.ReadLine();
+            if (Exit == "1")
+            {
+                return;
+            //  System.Environment.Exit(0);
+
+            }
+            else
+            {
+                Console.Clear();
+                Start();
+            }
+        }
 
 
 
@@ -148,11 +182,17 @@ namespace Calculadora
 
             Chamadas Chamadas = new Chamadas();
 
-            Chamadas.CalculoBase();
+            Console.WriteLine("Bem vindo a calculadora de rendimento de ADs!");
+            Console.WriteLine();
+
+            Chamadas.Start();
 
         }
 
 
 
     }
+
+
+
 }
