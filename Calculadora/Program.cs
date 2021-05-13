@@ -13,30 +13,41 @@ namespace Calculadora
     // Crie um script em sua linguagem de programação preferida que receba o valor investido em reais e retorne uma projeção aproximada da quantidade máxima de pessoas que visualizarão o mesmo anúncio
 
 
-    class Program
+    public class Chamadas
     {
-        static void Main(string[] args)
+        // Indexes
+        int MaxCompartilha = 0;
+        int MaxCPM = 0;
+
+        //Valores Não Atribuidos
+        float Investimento;
+        float VisusIndiretas;
+        float VisusDiretas;
+        float ClicksInicial;
+        float ClicksIndiretos;
+        float Compartilhamentos;
+        float CompartilhamentosNew;
+
+
+        // Valores Atribuidos
+        float PorcentoClicks = 0.12F;
+        float PorcentoCompartilhar = 0.15F;
+
+        // Criação de arrays
+        float[] CalculoDeVisus = new float[4];
+        float[] CalculoDeCompartilhamentos = new float[3];
+        float[] CalculoDeClicks = new float[4];
+
+        private float VisusIndiretasTT { get; set; }
+        private float totalCompartilhar { get; set; }
+        private float ClicksIndiretosTT { get; set; }
+
+        private int SumVisu { get; set; }
+        private int SumCPM { get; set; }
+        private int SumClicks { get; set; }
+
+        public void CalculoBase()
         {
-            // Indexes
-            int MaxCompartilha = 0;
-            int MaxCPM = 0;
-
-            //Valores Não Atribuidos
-            float Investimento;
-            float VisusIndiretas;
-            float VisusDiretas;
-            float ClicksInicial;
-            float ClicksIndiretos;
-            float Compartilhamentos;
-            float CompartilhamentosNew;
-
-            
-            // Valores Atribuidos
-            float PorcentoClicks = 0.12F;
-            float PorcentoCompartilhar = 0.15F;
-
-      
-
 
             Console.WriteLine("Insira o valor de seu investimento:");
 
@@ -53,58 +64,95 @@ namespace Calculadora
             Compartilhamentos = ClicksInicial * PorcentoCompartilhar;  // Define o número de compartilhamentos do anúncio
             VisusIndiretas = Compartilhamentos * 40; // Visualizações de compartilhamento
 
+            if (Compartilhamentos > 0)
+            {
+                CalculoCPM();
+            }
+        }
 
-            float[] CalculoDeVisus = new float[4];   // Criação de arrays
-            float[] CalculoDeCompartilhamentos = new float[3];
-            float[] CalculoDeClicks = new float[4];
 
+        public void CalculoCPM()
+        {
 
-                while (MaxCompartilha < 4){
+            while (MaxCompartilha < 4)
+            {
 
                 ClicksIndiretos = VisusIndiretas * PorcentoClicks;
-                CompartilhamentosNew = ClicksIndiretos * PorcentoCompartilhar;  
-                
+                CompartilhamentosNew = ClicksIndiretos * PorcentoCompartilhar;
+
                 CalculoDeVisus[MaxCompartilha] = VisusIndiretas; // Definir Array
 
-                VisusIndiretas = CompartilhamentosNew * 40;  
+                VisusIndiretas = CompartilhamentosNew * 40;
 
 
-                    if (MaxCompartilha < 3){
+                if (MaxCompartilha < 3)
+                {
                     CalculoDeCompartilhamentos[MaxCPM] = CompartilhamentosNew; //Definir array
-                    }
+                }
 
                 CalculoDeClicks[MaxCompartilha] = ClicksIndiretos; // Definir Array
 
                 MaxCompartilha++;  // Aumento do index
 
-                    if(MaxCompartilha < 3){
+                if (MaxCompartilha < 3)
+                {
                     MaxCPM++;  // Aumento do index especifico para compartilhamentos
-                    }
-
                 }
-   
 
-                float VisusIndiretasTT = CalculoDeVisus.Aggregate((a, b) => a + b);     // Soma dos arrays
-                float totalCompartilhar = CalculoDeCompartilhamentos.Aggregate((a, b) => a + b);
-                float ClicksIndiretosTT = CalculoDeClicks.Aggregate((a, b) => a + b);
+            }
 
+            // Soma dos arrays
+            VisusIndiretasTT = CalculoDeVisus.Aggregate((a, b) => a + b);
+            totalCompartilhar = CalculoDeCompartilhamentos.Aggregate((a, b) => a + b);
+            ClicksIndiretosTT = CalculoDeClicks.Aggregate((a, b) => a + b);
+            SomaArredondada();
+        }
 
-                int SumVisu = (int)Math.Round(VisusIndiretasTT) + (int)Math.Round(VisusDiretas); 
-                int SumCPM = (int)Math.Round(totalCompartilhar) + (int)Math.Round(Compartilhamentos);
-                int SumClicks = (int)Math.Round(ClicksIndiretosTT) + (int)Math.Round(ClicksInicial);
+        public void SomaArredondada()
+        {
+            SumVisu = (int)Math.Round(VisusIndiretasTT) + (int)Math.Round(VisusDiretas);
+            SumCPM = (int)Math.Round(totalCompartilhar) + (int)Math.Round(Compartilhamentos);
+            SumClicks = (int)Math.Round(ClicksIndiretosTT) + (int)Math.Round(ClicksInicial);
 
-                Console.WriteLine(SumVisu +" Visus");
-                Console.WriteLine(SumCPM + " Compartilhamentos");
-                Console.WriteLine(SumClicks + " Clicks");
+            WriteLine();
+        }
 
-                // Console.WriteLine("Suas visualizações diretas serão por volta de " + VisusDiretas + " e seu número de Clicks serão aproximadamente " + ClicksFinal);
-                // Console.WriteLine("Seus Clicks devido a compartilhamentos são: " + ClicksIndiretos + " e os compartilhamentos totais são: " + CompartilhamentosFinal);
-            
-
-
-
+        public void Soma()
+        {
 
 
         }
+
+        public void WriteLine() 
+        {
+
+            Console.WriteLine("Para o investimento de " + Investimento + "R$ você terá aproximadamente:");
+            Console.WriteLine(SumVisu + " Visualizações");
+            Console.WriteLine(SumCPM + " Compartilhamentos");
+            Console.WriteLine(SumClicks + " Clicks");
+
+
+        }
+
+
+
+
+    }
+
+    class Program
+    {
+
+
+        public static void Main(string[] args)
+        {
+
+            Chamadas Chamadas = new Chamadas();
+
+            Chamadas.CalculoBase();
+
+        }
+
+
+
     }
 }
