@@ -53,12 +53,21 @@ namespace Calculadora
 
 
         // Valores de anuncio
-        List<string>   NomeAd = new();
-        List<string>   NomeUser = new();
-        List<float>    InvestDiario = new();
+        List<string> NomeAd = new();
+        List<string> NomeUser = new();
+        List<float> InvestDiario = new();
         List<DateTime> DataInicial = new();
         List<DateTime> DataFinal = new();
 
+
+        //Valores individuais
+        DateTime ValorDataIni;
+        DateTime ValorDataFin;
+        string AdEscrito;
+        string User;
+
+        float LastInvest;
+        float TotalInvest;
 
 
         public void Start()
@@ -89,116 +98,146 @@ namespace Calculadora
 
                 case '2':
                     start = true;
-                    registros();
+                    CheckRegistros();
                     break;
 
                 case '3':
                     start = true;
-                    CalculoBase();
+                    CalculoSimples();
                     break;
             }
 
-            if(start is false) {
-            Console.WriteLine();
-            Console.WriteLine("Opção inválida, tente novamente");
-            Start();
+            if (start is false) {
+                Console.WriteLine();
+                Console.WriteLine("Opção inválida, tente novamente");
+                Start();
             }
         }
 
         public void AdReg()
         {
-
-            DateTime ValorDataIni;
-            DateTime ValorDataFin;
-            String AdEscrito;
-            String User;
-
             Console.Clear();
 
 
             Console.WriteLine("Insira o nome de seu anúncio:");
+            ChamadaNome();
+            NomeAd.Add(AdEscrito);
+
+
+            Console.WriteLine("Insira o nome de seu cliente:");
+            ChamadaUser();
+            NomeUser.Add(User);
+
+            Console.WriteLine("Insira a data de ínicio de seu AD em dd/MM/yyyy");
+            CalculoDataInicial();
+            if(ValorDataIni < DateTime.Today)
+            {
+                Console.WriteLine("ERRO: A data de finalização da aplicação deve sever maior que: " + DateTime.Today);
+                CalculoDataInicial();
+            }
+            else
+            {
+             DataInicial.Add(ValorDataIni);
+            }
+
+            Console.WriteLine("Insira a data de finalização de seu AD em dd/MM/yyyy");
+            CalculoDataFinal();
+            if(ValorDataFin < DateTime.Today && ValorDataFin > ValorDataIni)
+            {
+                Console.WriteLine("ERRO: A data de finalização da aplicação deve ser maior que: " + DateTime.Now + "e maior que a data inicial.");
+                CalculoDataFinal();
+            }
+            else
+            {
+                DataFinal.Add(ValorDataFin);
+            }
+
+            Console.WriteLine("Insira o valor de seu investimento diário");
+            ChamadaInvest();
+            InvestDiario.Add(Investimento);
+
+            Console.Clear();
+            Registrando();
+
+        }
+
+        public void ChamadaNome()
+        {
             AdEscrito = Console.ReadLine();
             while (string.IsNullOrWhiteSpace(AdEscrito))
             {
                 Console.WriteLine("O nome de seu anúncio deve ter no mínimo um caracter, tente novamente");
                 AdEscrito = Console.ReadLine();
             }
-            NomeAd.Add(AdEscrito);
+        }
 
-
-            Console.WriteLine("Insira o nome de seu cliente:");
+        public void ChamadaUser()
+        {
             User = Console.ReadLine();
             while (string.IsNullOrWhiteSpace(User))
             {
                 Console.WriteLine("O nome de seu anúncio deve ter no mínimo um caracter, tente novamente");
                 User = Console.ReadLine();
             }
-            NomeUser.Add(User);
+        }
 
-            Console.WriteLine("Insira a data de ínicio de seu AD em dd/MM/yyyy");
-            while (!DateTime.TryParse(Console.ReadLine(), null, System.Globalization.DateTimeStyles.None, out ValorDataIni)) {
-
-                Console.WriteLine("Formato inválido, tente novamente, lembre-se dd/MM/YYYY");
-            }
-            DataInicial.Add(ValorDataIni);
-
-            Console.WriteLine("Insira a data de finalização de seu AD em dd/MM/yyyy");
-            while (!DateTime.TryParse(Console.ReadLine(), null, System.Globalization.DateTimeStyles.None, out ValorDataFin))
+        public void CalculoDataInicial()
+        {
+            while (!DateTime.TryParse(Console.ReadLine(), null, System.Globalization.DateTimeStyles.None, out ValorDataIni))
             {
 
                 Console.WriteLine("Formato inválido, tente novamente, lembre-se dd/MM/YYYY");
             }
-            DataFinal.Add(ValorDataFin);
+        }
 
-            Console.WriteLine("Insira o valor de seu investimento diário");
+        public void CalculoDataFinal()
+        {
 
+
+            while (!DateTime.TryParse(Console.ReadLine(), null, System.Globalization.DateTimeStyles.None, out ValorDataFin))
+            {
+
+                    Console.WriteLine("Formato inválido, tente novamente, lembre-se dd/MM/YYYY");
+            }
+        }
+
+        public void ChamadaInvest()
+        {
             while (!float.TryParse(Console.ReadLine(), out Investimento)) // While loop para evitar possível erro
             {
                 Console.WriteLine("Tente inserir um número!");
             }
-            InvestDiario.Add(Investimento);
+        }
 
-            Console.Clear();
-
+        public void Registrando()
+        {
             var LastAd = NomeAd[NomeAd.Count - 1];
             var LastUser = NomeUser[NomeUser.Count - 1];
             var LastDateIn = DataInicial[DataInicial.Count - 1];
             var LastDatFin = DataFinal[DataFinal.Count - 1];
-            var LastInvest = InvestDiario[InvestDiario.Count - 1];
+            LastInvest = InvestDiario[InvestDiario.Count - 1];
 
             var TotalDays = (LastDatFin.Date - LastDateIn.Date).Days;
-            var TotalInvest = (TotalDays * LastInvest);
+            TotalInvest = TotalDays * LastInvest;
 
             Console.WriteLine(LastAd + " registrado com sucesso, com os seguintes dados:");
             Console.WriteLine("Cliente: " + LastUser);
             Console.WriteLine("Data de ínicio " + LastDateIn);
             Console.WriteLine("Data de término " + LastDatFin);
             Console.WriteLine("O valor de seu investimento diário é: " + LastInvest + "R$");
-            Console.WriteLine("Seu AD durará " + TotalDays + " dias e custará no total: " + TotalInvest + "R$"); 
-
-
-
+            Console.WriteLine("Seu AD durará " + TotalDays + " dias e custará no total: " + TotalInvest + "R$");
+            CalculoBase();
         }
 
-        public void registros()
-        {
 
+        public void CheckRegistros()
+        {
+            Console.Clear();
         }
 
         public void CalculoBase()
         {
-
-            Console.WriteLine("Insira o valor de seu investimento:");
-
-            while (!float.TryParse(Console.ReadLine(), out Investimento)) // While loop para evitar possível erro
-            {
-                Console.Clear();
-                Console.WriteLine("Tente inserir um número!");
-            }
-
-            Console.WriteLine("O valor de seu investimento é " + Investimento + "R$"); // Base do código
-
-            VisusDiretas = Investimento * 30;   // Multiplica o investimento para visualizações Diretas
+            VisusDiretas = TotalInvest * 30;   // Multiplica o investimento para visualizações Diretas
             ClicksInicial = VisusDiretas * PorcentoClicks;   // Define o numero de clicks por visualização
             Compartilhamentos = ClicksInicial * PorcentoCompartilhar;  // Define o número de compartilhamentos do anúncio
             VisusIndiretas = Compartilhamentos * 40; // Visualizações de compartilhamento
@@ -213,6 +252,44 @@ namespace Calculadora
                 Soma();
 
             }
+        }
+
+        public void CalculoSimples()
+        {
+            Console.Clear();
+
+            Console.WriteLine("Bem-Vindo(a), teste nossa calculadora de investimentos a seguir.");
+            Console.WriteLine();
+
+            Console.WriteLine("Insira o valor de seu investimento:");
+            
+            while (!float.TryParse(Console.ReadLine(), out Investimento)) // While loop para evitar possível erro
+            {
+            Console.Clear();
+            Console.WriteLine("Tente inserir um número!");
+            }
+
+            Console.WriteLine("O valor de seu investimento é " + Investimento + "R$"); // Base do código
+
+            VisusDiretas = TotalInvest * 30;   // Multiplica o investimento para visualizações Diretas
+            ClicksInicial = VisusDiretas * PorcentoClicks;   // Define o numero de clicks por visualização
+            Compartilhamentos = ClicksInicial * PorcentoCompartilhar;  // Define o número de compartilhamentos do anúncio
+            VisusIndiretas = Compartilhamentos * 40; // Visualizações de compartilhamento
+
+            if (Compartilhamentos > 1)     // DEBUG para verificar valores e calculos.
+            {
+                CalculoCPM();
+            }
+            else
+            {
+
+                Soma();
+
+            }
+
+
+
+
         }
 
 
@@ -277,9 +354,9 @@ namespace Calculadora
         {
 
             Console.WriteLine("Para o investimento de " + Investimento + "R$ você terá aproximadamente:");
-            Console.WriteLine(SumVisu + " Visualizações por dia");
-            Console.WriteLine(SumCPM + " Compartilhamentos por dia");
-            Console.WriteLine(SumClicks + " Clicks por dia");
+            Console.WriteLine(SumVisu + " Visualizações totais");
+            Console.WriteLine(SumCPM + " Compartilhamentos totais");
+            Console.WriteLine(SumClicks + " Clicks totais");
 
             //
 
