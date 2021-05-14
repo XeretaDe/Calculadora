@@ -58,6 +58,12 @@ namespace Calculadora
         List<float> InvestDiario = new();
         List<DateTime> DataInicial = new();
         List<DateTime> DataFinal = new();
+        List<int> DataTotal = new();
+        List<int> CPM = new();
+        List<int> Visus = new();
+        List<int> Clicks = new();
+
+        
 
 
         //Valores individuais
@@ -66,8 +72,20 @@ namespace Calculadora
         string AdEscrito;
         string User;
 
+        string LastAd;
+        string LastUser;
+
         float LastInvest;
         float TotalInvest;
+
+        bool start_registrando = true;
+
+        int TotalDays;
+
+        int LastVisus;
+        int LastCPM;
+        int LastClicks;
+
 
 
         public void Start()
@@ -211,13 +229,13 @@ namespace Calculadora
 
         public void Registrando()
         {
-            var LastAd = NomeAd[NomeAd.Count - 1];
-            var LastUser = NomeUser[NomeUser.Count - 1];
+            LastAd = NomeAd[NomeAd.Count - 1];
+            LastUser = NomeUser[NomeUser.Count - 1];
             var LastDateIn = DataInicial[DataInicial.Count - 1];
             var LastDatFin = DataFinal[DataFinal.Count - 1];
             LastInvest = InvestDiario[InvestDiario.Count - 1];
 
-            var TotalDays = (LastDatFin.Date - LastDateIn.Date).Days;
+            TotalDays = (LastDatFin.Date - LastDateIn.Date).Days;
             TotalInvest = TotalDays * LastInvest;
 
             Console.WriteLine(LastAd + " registrado com sucesso, com os seguintes dados:");
@@ -229,10 +247,64 @@ namespace Calculadora
             CalculoBase();
         }
 
+        public void RegistrandoValores()
+        {
+            Visus.Add(SumVisu);
+            CPM.Add(SumCPM);
+            Clicks.Add(SumClicks);
+
+            LastVisus = Visus[Visus.Count - 1];
+            LastCPM = CPM[CPM.Count - 1];
+            LastClicks = Clicks[Clicks.Count - 1];
+
+            int ID = 1;
+
+            //      var AD = new List<Tuple<int, string, string, float, int, int, int, int>>()
+            //         .Select(t => new { ID = t.Item1, ADname = t.Item2, User = t.Item3, InvDia = t.Item4, Data = t.Item5, Cpm = t.Item6, visus = t.Item7, clicks = t.Rest });
+            //            AD.(new { ID = ID, ADname = LastAd, User = LastUser, InvDia = TotalInvest, Data = TotalDays, Cpm = LastCPM, visus = LastVisus, clicks = LastClicks });
+
+            List<(int, string, string, float, int, int, int, int)> AD = new List<(int, string, string, float, int, int, int, int)>();
+            AD.Add((ID, LastAd, LastUser, TotalInvest, TotalDays, LastCPM, LastVisus, LastClicks));
+
+
+            ID++;
+
+
+            WriteLine();
+        }
+
 
         public void CheckRegistros()
         {
             Console.Clear();
+
+            Console.WriteLine("Opção 1: Filtrar por clientes");
+            Console.WriteLine("Opção 2: Filtrar por duração dos ADs");
+
+            Console.WriteLine();
+            Console.WriteLine("Selecione sua opção com os número 1 ou 2!");
+
+            char Option = Console.ReadKey().KeyChar;
+            if (Option == 1) 
+            {
+                NomeUser.ForEach(user => Console.WriteLine(user + ","));
+                   // numbers.ForEach(num => Console.WriteLine(num + ", "));//prints 1, 2, 5, 7, 8, 10,
+
+
+
+            }
+            else if(Option == 2)
+            {
+
+            }
+            else
+            {
+                Console.WriteLine();
+                Console.WriteLine("ERRO, o valor selecionado não existe, tente novamente com 1 ou 2.");
+                CheckRegistros();
+
+            }
+
         }
 
         public void CalculoBase()
@@ -275,6 +347,8 @@ namespace Calculadora
             ClicksInicial = VisusDiretas * PorcentoClicks;   // Define o numero de clicks por visualização
             Compartilhamentos = ClicksInicial * PorcentoCompartilhar;  // Define o número de compartilhamentos do anúncio
             VisusIndiretas = Compartilhamentos * 40; // Visualizações de compartilhamento
+
+            start_registrando = false;
 
             if (Compartilhamentos > 1)     // DEBUG para verificar valores e calculos.
             {
@@ -337,7 +411,15 @@ namespace Calculadora
             SumCPM = (int)Math.Round(totalCompartilhar) + (int)Math.Round(Compartilhamentos);
             SumClicks = (int)Math.Round(ClicksIndiretosTT) + (int)Math.Round(ClicksInicial);
 
-            WriteLine(); // DEBUG P VERIFICAR CALCULOS
+            if (start_registrando)
+            {
+                RegistrandoValores();
+            }
+            else
+            {
+                start_registrando = true;
+                WriteLine(); // DEBUG P VERIFICAR CALCULOS
+            }
         }
 
         public void Soma()
@@ -346,8 +428,15 @@ namespace Calculadora
             SumCPM = (int)totalCompartilhar + (int)Compartilhamentos;
             SumClicks = (int)Math.Round(ClicksIndiretosTT) + (int)Math.Round(ClicksInicial);
 
-            WriteLine(); // DEBUG P VERIFICAR CALCULOS
-
+            if (start_registrando)
+            {
+                RegistrandoValores();
+            }
+            else
+            {
+                start_registrando = true;
+                WriteLine(); // DEBUG P VERIFICAR CALCULOS
+            }
         }
 
         public void WriteLine() 
