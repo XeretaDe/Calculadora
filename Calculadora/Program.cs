@@ -62,8 +62,11 @@ namespace Calculadora
         List<int> CPM = new();
         List<int> Visus = new();
         List<int> Clicks = new();
+        List<int> Id = new();
 
-        
+        List<(int, string, string, float, int, int, int, int)> AD = new List<(int, string, string, float, int, int, int, int)>();
+
+
 
 
         //Valores individuais
@@ -82,6 +85,7 @@ namespace Calculadora
 
         int TotalDays;
 
+        int LastID;
         int LastVisus;
         int LastCPM;
         int LastClicks;
@@ -148,27 +152,10 @@ namespace Calculadora
 
             Console.WriteLine("Insira a data de ínicio de seu AD em dd/MM/yyyy");
             CalculoDataInicial();
-            if(ValorDataIni < DateTime.Today)
-            {
-                Console.WriteLine("ERRO: A data de finalização da aplicação deve sever maior que: " + DateTime.Today);
-                CalculoDataInicial();
-            }
-            else
-            {
-             DataInicial.Add(ValorDataIni);
-            }
+
 
             Console.WriteLine("Insira a data de finalização de seu AD em dd/MM/yyyy");
             CalculoDataFinal();
-            if(ValorDataFin < DateTime.Today && ValorDataFin > ValorDataIni)
-            {
-                Console.WriteLine("ERRO: A data de finalização da aplicação deve ser maior que: " + DateTime.Now + "e maior que a data inicial.");
-                CalculoDataFinal();
-            }
-            else
-            {
-                DataFinal.Add(ValorDataFin);
-            }
 
             Console.WriteLine("Insira o valor de seu investimento diário");
             ChamadaInvest();
@@ -206,6 +193,16 @@ namespace Calculadora
 
                 Console.WriteLine("Formato inválido, tente novamente, lembre-se dd/MM/YYYY");
             }
+            if (ValorDataIni < DateTime.Today)
+            {
+                Console.WriteLine("ERRO: A data de ínicio da aplicação deve sever maior que: " + DateTime.Today);
+                CalculoDataInicial();
+            }
+            else
+            {
+                DataInicial.Add(ValorDataIni);
+            }
+
         }
 
         public void CalculoDataFinal()
@@ -216,6 +213,15 @@ namespace Calculadora
             {
 
                     Console.WriteLine("Formato inválido, tente novamente, lembre-se dd/MM/YYYY");
+            }
+            if (ValorDataFin <= ValorDataIni)
+            {
+                Console.WriteLine("ERRO: A data de finalização da aplicação deve ser maior que a data inicial.");
+                CalculoDataFinal();
+            }
+            else
+            {
+                DataFinal.Add(ValorDataFin);
             }
         }
 
@@ -229,6 +235,10 @@ namespace Calculadora
 
         public void Registrando()
         {
+            int ID = 1;
+            Id.Add(ID);
+            LastID = Id[Id.Count - 1];
+            ID++;
             LastAd = NomeAd[NomeAd.Count - 1];
             LastUser = NomeUser[NomeUser.Count - 1];
             var LastDateIn = DataInicial[DataInicial.Count - 1];
@@ -244,6 +254,9 @@ namespace Calculadora
             Console.WriteLine("Data de término " + LastDatFin);
             Console.WriteLine("O valor de seu investimento diário é: " + LastInvest + "R$");
             Console.WriteLine("Seu AD durará " + TotalDays + " dias e custará no total: " + TotalInvest + "R$");
+            Console.WriteLine();
+            Console.WriteLine("O número de registro de seu AD é: " + LastID);
+
             CalculoBase();
         }
 
@@ -257,17 +270,14 @@ namespace Calculadora
             LastCPM = CPM[CPM.Count - 1];
             LastClicks = Clicks[Clicks.Count - 1];
 
-            int ID = 1;
 
             //      var AD = new List<Tuple<int, string, string, float, int, int, int, int>>()
             //         .Select(t => new { ID = t.Item1, ADname = t.Item2, User = t.Item3, InvDia = t.Item4, Data = t.Item5, Cpm = t.Item6, visus = t.Item7, clicks = t.Rest });
             //            AD.(new { ID = ID, ADname = LastAd, User = LastUser, InvDia = TotalInvest, Data = TotalDays, Cpm = LastCPM, visus = LastVisus, clicks = LastClicks });
 
-            List<(int, string, string, float, int, int, int, int)> AD = new List<(int, string, string, float, int, int, int, int)>();
-            AD.Add((ID, LastAd, LastUser, TotalInvest, TotalDays, LastCPM, LastVisus, LastClicks));
+            AD.Add((LastID, LastAd, LastUser, TotalInvest, TotalDays, LastCPM, LastVisus, LastClicks));
 
 
-            ID++;
 
 
             WriteLine();
@@ -285,17 +295,101 @@ namespace Calculadora
             Console.WriteLine("Selecione sua opção com os número 1 ou 2!");
 
             char Option = Console.ReadKey().KeyChar;
-            if (Option == 1) 
+            if (Option is '1') 
             {
-                NomeUser.ForEach(user => Console.WriteLine(user + ","));
-                   // numbers.ForEach(num => Console.WriteLine(num + ", "));//prints 1, 2, 5, 7, 8, 10,
+                Console.WriteLine();
+                if (AD.Any())
+                {
+                    Console.WriteLine("Esses são os clientes registrados:");
+                    Console.WriteLine();
+                    for (int i = 0; i < AD.Count; i++)
+                    {    
+                        string WriteName = AD[i].Item3;
+                        int WriteID = AD[i].Item1;
+                        Console.WriteLine(WriteName + "    ID: " + WriteID);
+                    }
+
+                    Console.WriteLine("Escreva o nome de seu cliente");
+                    bool ClienteEncontrado = false;
+                    string NomeSelecionado = Console.ReadLine();
+                    for(int i = 0; i < AD.Count; i++)
+                    {
+                        if(AD[i].Item3 == NomeSelecionado)
+                        {
+                            if(AD[i].Item3.Count() > 1)
+                            {
+                                Console.WriteLine("Ops! Parece que existem dois clientes com o mesmo nome!");
+                                Console.WriteLine("Não se preocupe, você ainda pode acessar suas informações com a ID de seu usúario!");
+
+                                // Add void da opção 1.
+
+                            }
+                            else
+                            {
+
+                            }
+                            
+
+                            Console.WriteLine("Informações do cliente: " + AD[i].Item3);
+
+                            Console.WriteLine("Número de registro do AD: " + AD[i].Item1);
+                            Console.WriteLine("Nome do AD: " + AD[i].Item2);
+                            Console.WriteLine("Valor do investimento total: " + AD[i].Item4);
+                            Console.WriteLine("Total de dias que o AD ficará vísivel: " + AD[i].Item5);
+                            Console.WriteLine("Compartilhamentos aproximados: " + AD[i].Item6);
+                            Console.WriteLine("Visualizações aproximadas: " + AD[i].Item7);
+                            Console.WriteLine("Clicks aproximados: " + AD[i].Item8);
+
+
+
+                            ClienteEncontrado = true;
+                        }
+                        
+
+                    }
+                    if(!ClienteEncontrado)
+                    {
+                        Console.WriteLine("Cliente não encontrado.");
+                        Console.WriteLine();
+                        Console.WriteLine("Opção 1: Tentar fazer uma nova pesquisa");
+                        Console.WriteLine("Opção 2: Registrar um novo cliente");
+                        Console.WriteLine("Selecione sua opção com os número 1 ou 2!");
+
+                        char OutKey = Console.ReadKey().KeyChar;
+
+                        if (OutKey == 1)
+                        {
+                            Console.Clear();
+                            CheckRegistros();
+
+                        }
+                        else if(OutKey == 2)
+                        {
+                            Console.Clear();
+                            AdReg();
+                        }
+                        else
+                        {
+                            Console.WriteLine("ERRO: Você não selecionou nenhuma das opções possíveis");
+                            exit();
+                        }
+
+
+
+                    }
+
+
+
+                }
+                else
+                { Console.WriteLine("Não foram encontrados AD's válidos, tente registrar um primeiro."); }
 
 
 
             }
-            else if(Option == 2)
+            else if(Option is '2')
             {
-
+                //  ADD Filtro por duração
             }
             else
             {
