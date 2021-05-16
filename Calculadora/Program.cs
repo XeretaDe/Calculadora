@@ -90,6 +90,9 @@ namespace Calculadora
         int LastCPM;
         int LastClicks;
 
+        int ID = 0;
+        int IDint;
+
 
 
         public void Start()
@@ -97,6 +100,7 @@ namespace Calculadora
             Console.WriteLine("Opção 1: Registrar seu AD");
             Console.WriteLine("Opção 2: Verificar ADs registrados");
             Console.WriteLine("Opção 3: Fazer uma simulação de AD");
+            Console.WriteLine("Opção 4: Fechar o App");
 
             Console.WriteLine();
             Console.WriteLine("Selecione sua opção com os número 1, 2 ou 3!");
@@ -127,6 +131,11 @@ namespace Calculadora
                     start = true;
                     CalculoSimples();
                     break;
+
+                case '4':
+                    start = true;
+                    exit();
+                    break;
             }
 
             if (start is false) {
@@ -139,8 +148,6 @@ namespace Calculadora
         public void AdReg()
         {
             Console.Clear();
-
-
             Console.WriteLine("Insira o nome de seu anúncio:");
             ChamadaNome();
             NomeAd.Add(AdEscrito);
@@ -163,7 +170,6 @@ namespace Calculadora
 
             Console.Clear();
             Registrando();
-
         }
 
         public void ChamadaNome()
@@ -181,7 +187,7 @@ namespace Calculadora
             User = Console.ReadLine();
             while (string.IsNullOrWhiteSpace(User))
             {
-                Console.WriteLine("O nome de seu anúncio deve ter no mínimo um caracter, tente novamente");
+                Console.WriteLine("O nome de seu cliente deve ter no mínimo um caracter, tente novamente");
                 User = Console.ReadLine();
             }
         }
@@ -202,13 +208,10 @@ namespace Calculadora
             {
                 DataInicial.Add(ValorDataIni);
             }
-
         }
 
         public void CalculoDataFinal()
         {
-
-
             while (!DateTime.TryParse(Console.ReadLine(), null, System.Globalization.DateTimeStyles.None, out ValorDataFin))
             {
 
@@ -235,10 +238,9 @@ namespace Calculadora
 
         public void Registrando()
         {
-            int ID = 1;
+            ID = ++ID;
             Id.Add(ID);
             LastID = Id[Id.Count - 1];
-            ID++;
             LastAd = NomeAd[NomeAd.Count - 1];
             LastUser = NomeUser[NomeUser.Count - 1];
             var LastDateIn = DataInicial[DataInicial.Count - 1];
@@ -262,31 +264,21 @@ namespace Calculadora
 
         public void RegistrandoValores()
         {
-            Visus.Add(SumVisu);
-            CPM.Add(SumCPM);
-            Clicks.Add(SumClicks);
+
 
             LastVisus = Visus[Visus.Count - 1];
             LastCPM = CPM[CPM.Count - 1];
             LastClicks = Clicks[Clicks.Count - 1];
 
-
-            //      var AD = new List<Tuple<int, string, string, float, int, int, int, int>>()
-            //         .Select(t => new { ID = t.Item1, ADname = t.Item2, User = t.Item3, InvDia = t.Item4, Data = t.Item5, Cpm = t.Item6, visus = t.Item7, clicks = t.Rest });
-            //            AD.(new { ID = ID, ADname = LastAd, User = LastUser, InvDia = TotalInvest, Data = TotalDays, Cpm = LastCPM, visus = LastVisus, clicks = LastClicks });
-
             AD.Add((LastID, LastAd, LastUser, TotalInvest, TotalDays, LastCPM, LastVisus, LastClicks));
-
-
-
-
             WriteLine();
         }
 
 
         public void CheckRegistros()
         {
-            Console.Clear();
+            Console.WriteLine();
+            Console.WriteLine();
 
             Console.WriteLine("Opção 1: Filtrar por clientes");
             Console.WriteLine("Opção 2: Filtrar por duração dos ADs");
@@ -298,57 +290,159 @@ namespace Calculadora
             if (Option is '1') 
             {
                 Console.WriteLine();
-                if (AD.Any())
+                FiltroNome();
+            }
+            else if(Option is '2')
+            {
+                Console.WriteLine();
+                FiltroTempo();
+            }
+            else
+            {
+                Console.WriteLine();
+                Console.WriteLine("ERRO, o valor selecionado não existe, tente novamente com 1 ou 2.");
+                CheckRegistros();
+            }
+        }
+
+        public void FiltroNome()
+        {
+            if (AD.Any())
+            {
+                Console.WriteLine("Esses são os clientes registrados:");
+                Console.WriteLine();
+                for (int i = 0; i < AD.Count; i++)
                 {
-                    Console.WriteLine("Esses são os clientes registrados:");
-                    Console.WriteLine();
-                    for (int i = 0; i < AD.Count; i++)
-                    {    
-                        string WriteName = AD[i].Item3;
-                        int WriteID = AD[i].Item1;
-                        Console.WriteLine(WriteName + "    ID: " + WriteID);
-                    }
+                    string WriteName = AD[i].Item3;
+                    int WriteID = AD[i].Item1;
+                    Console.WriteLine(WriteName + "    ID: " + WriteID);
+                }
 
-                    Console.WriteLine("Escreva o nome de seu cliente");
-                    bool ClienteEncontrado = false;
-                    string NomeSelecionado = Console.ReadLine();
-                    for(int i = 0; i < AD.Count; i++)
+                Console.WriteLine();
+                Console.WriteLine("Escreva o nome de seu cliente");
+                bool ClienteEncontrado = false;
+                string NomeSelecionado = Console.ReadLine();
+                for (int i = 0; i < AD.Count; i++)
+                {
+                    int NumeroTotal = i;
+                    if (AD[i].Item3 == NomeSelecionado)
                     {
-                        if(AD[i].Item3 == NomeSelecionado)
-                        {
-                            if(AD[i].Item3.Count() > 1)
+                        for (int x = 0; x < AD[NumeroTotal].Item3.Count(); x++){
+                        
+                         Console.WriteLine("Ok, seu AD foi encontrado, por favor insira seu ID para acesso:  ");
+
+                        while (!int.TryParse(Console.ReadLine(), out IDint)){
+                        Console.WriteLine();
+                        Console.WriteLine("Tente inserir um número!");
+                        }
+
+                            if (AD[i].Item1 == IDint)
                             {
-                                Console.WriteLine("Ops! Parece que existem dois clientes com o mesmo nome!");
-                                Console.WriteLine("Não se preocupe, você ainda pode acessar suas informações com a ID de seu usúario!");
+                                Console.WriteLine("Informações do cliente: " + AD[i].Item3);
+                                Console.WriteLine("Número de registro do AD: " + AD[i].Item1);
+                                Console.WriteLine("Nome do AD: " + AD[i].Item2);
+                                Console.WriteLine("Valor do investimento total: " + AD[i].Item4);
+                                Console.WriteLine("Total de dias que o AD ficará vísivel: " + AD[i].Item5);
+                                Console.WriteLine("Compartilhamentos aproximados: " + AD[i].Item6);
+                                Console.WriteLine("Visualizações aproximadas: " + AD[i].Item7);
+                                Console.WriteLine("Clicks aproximados: " + AD[i].Item8);
+                                ClienteEncontrado = true;
 
-                                // Add void da opção 1.
-
+                                Start();
                             }
                             else
                             {
-
+                                CheckRegistros();
+                                Console.WriteLine("ID incorreto, reiniciando processo");
+                                Console.WriteLine();
                             }
-                            
+                    }
+                    }
+                }
+                if (!ClienteEncontrado)
+                {
+                    Console.WriteLine("Cliente não encontrado.");
+                    Console.WriteLine();
+                    Console.WriteLine("Opção 1: Tentar fazer uma nova pesquisa");
+                    Console.WriteLine("Opção 2: Registrar um novo cliente");
+                    Console.WriteLine("Selecione sua opção com os número 1 ou 2!");
 
-                            Console.WriteLine("Informações do cliente: " + AD[i].Item3);
-
-                            Console.WriteLine("Número de registro do AD: " + AD[i].Item1);
-                            Console.WriteLine("Nome do AD: " + AD[i].Item2);
-                            Console.WriteLine("Valor do investimento total: " + AD[i].Item4);
-                            Console.WriteLine("Total de dias que o AD ficará vísivel: " + AD[i].Item5);
-                            Console.WriteLine("Compartilhamentos aproximados: " + AD[i].Item6);
-                            Console.WriteLine("Visualizações aproximadas: " + AD[i].Item7);
-                            Console.WriteLine("Clicks aproximados: " + AD[i].Item8);
-
-
-
-                            ClienteEncontrado = true;
-                        }
-                        
+                    char OutKey = Console.ReadKey().KeyChar;
+                    if (OutKey is '1')
+                    {
+                        Console.Clear();
+                        CheckRegistros();
 
                     }
-                    if(!ClienteEncontrado)
+                    else if (OutKey is '2')
                     {
+                        Console.Clear();
+                        AdReg();
+                    }
+                    else
+                    {
+                        Console.WriteLine("ERRO: Você não selecionou nenhuma das opções possíveis");
+                        exit();
+                    }
+                }
+            }
+            else
+            { 
+                Console.WriteLine("Não foram encontrados AD's válidos, tente registrar um primeiro.");
+                Console.Clear();
+                Start();
+            }
+
+        }
+
+        public void FiltroTempo()
+        {
+            if (AD.Any())
+            {
+                Console.WriteLine("Esses são os ADs registrados e suas durações:");
+                Console.WriteLine();
+                for (int i = 0; i < AD.Count; i++)
+                {
+                    int WriteTime = AD[i].Item5;
+                    int WriteID = AD[i].Item1;
+                    Console.WriteLine("Intervalo de tempo: " + WriteTime + " dias, ID: " + WriteID);
+                }
+
+                Console.WriteLine("Escreva o intervalo de dias de seu AD");
+
+                bool ADEncontrado = false;
+                string ADSelecionado = Console.ReadLine();
+
+                for (int i = 0; i < AD.Count; i++)
+                {
+                    if (AD[i].Item5 == Int32.Parse(ADSelecionado))
+                    {
+                    Console.WriteLine("Ok, seu AD foi encontrado, por favor insira seu ID para acesso: ");
+
+                    while (!int.TryParse(Console.ReadLine(), out IDint))
+                    {
+                    Console.WriteLine();
+                    Console.WriteLine("Tente inserir um número!");
+                    }
+                    if (AD[i].Item1 == IDint){
+                    if (!ADEncontrado){
+
+                    Console.WriteLine("Informações do cliente: " + AD[i].Item3);
+                    Console.WriteLine("Número de registro do AD: " + AD[i].Item1);
+                    Console.WriteLine("Nome do AD: " + AD[i].Item2);
+                    Console.WriteLine("Valor do investimento total: " + AD[i].Item4);
+                    Console.WriteLine("Total de dias que o AD ficará vísivel: " + AD[i].Item5);
+                    Console.WriteLine("Compartilhamentos aproximados: " + AD[i].Item6);
+                    Console.WriteLine("Visualizações aproximadas: " + AD[i].Item7);
+                    Console.WriteLine("Clicks aproximados: " + AD[i].Item8);
+                    ADEncontrado = true;
+                    Start();
+                    }
+                    }
+                    else{
+
+                        if (!ADEncontrado){
+
                         Console.WriteLine("Cliente não encontrado.");
                         Console.WriteLine();
                         Console.WriteLine("Opção 1: Tentar fazer uma nova pesquisa");
@@ -357,49 +451,37 @@ namespace Calculadora
 
                         char OutKey = Console.ReadKey().KeyChar;
 
-                        if (OutKey == 1)
-                        {
-                            Console.Clear();
-                            CheckRegistros();
+                                if (OutKey is '1')
+                                {
+                                    Console.Clear();
+                                    CheckRegistros();
 
+                                }
+                                else if (OutKey is '2')
+                                {
+                                    Console.Clear();
+                                    AdReg();
+                                }
+                                else
+                                {
+                                    Console.WriteLine("ERRO: Você não selecionou nenhuma das opções possíveis");
+                                    exit();
+                                }
                         }
-                        else if(OutKey == 2)
-                        {
-                            Console.Clear();
-                            AdReg();
-                        }
-                        else
-                        {
-                            Console.WriteLine("ERRO: Você não selecionou nenhuma das opções possíveis");
-                            exit();
-                        }
-
-
-
                     }
-
-
-
+                    }
                 }
-                else
-                { Console.WriteLine("Não foram encontrados AD's válidos, tente registrar um primeiro."); }
-
-
-
             }
-            else if(Option is '2')
-            {
-                //  ADD Filtro por duração
+            else{
+                Console.Clear();
+                Console.WriteLine("Não foram encontrados AD's válidos, tente registrar um primeiro.");
+                Start();
             }
-            else
-            {
-                Console.WriteLine();
-                Console.WriteLine("ERRO, o valor selecionado não existe, tente novamente com 1 ou 2.");
-                CheckRegistros();
-
-            }
-
         }
+
+
+
+
 
         public void CalculoBase()
         {
@@ -437,7 +519,7 @@ namespace Calculadora
 
             Console.WriteLine("O valor de seu investimento é " + Investimento + "R$"); // Base do código
 
-            VisusDiretas = TotalInvest * 30;   // Multiplica o investimento para visualizações Diretas
+            VisusDiretas = Investimento * 30;   // Multiplica o investimento para visualizações Diretas
             ClicksInicial = VisusDiretas * PorcentoClicks;   // Define o numero de clicks por visualização
             Compartilhamentos = ClicksInicial * PorcentoCompartilhar;  // Define o número de compartilhamentos do anúncio
             VisusIndiretas = Compartilhamentos * 40; // Visualizações de compartilhamento
@@ -505,13 +587,16 @@ namespace Calculadora
             SumCPM = (int)Math.Round(totalCompartilhar) + (int)Math.Round(Compartilhamentos);
             SumClicks = (int)Math.Round(ClicksIndiretosTT) + (int)Math.Round(ClicksInicial);
 
+            Visus.Add(SumVisu);
+            CPM.Add(SumCPM);
+            Clicks.Add(SumClicks);
+
             if (start_registrando)
             {
                 RegistrandoValores();
             }
             else
             {
-                start_registrando = true;
                 WriteLine(); // DEBUG P VERIFICAR CALCULOS
             }
         }
@@ -522,13 +607,16 @@ namespace Calculadora
             SumCPM = (int)totalCompartilhar + (int)Compartilhamentos;
             SumClicks = (int)Math.Round(ClicksIndiretosTT) + (int)Math.Round(ClicksInicial);
 
+            Visus.Add(SumVisu);
+            CPM.Add(SumCPM);
+            Clicks.Add(SumClicks);
+
             if (start_registrando)
             {
                 RegistrandoValores();
             }
             else
             {
-                start_registrando = true;
                 WriteLine(); // DEBUG P VERIFICAR CALCULOS
             }
         }
